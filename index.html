@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Philip Stockenhed Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;700&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Teko', sans-serif;
             background-color: #f0f0f0;
             color: #333;
             margin: 0;
@@ -14,14 +15,15 @@
         }
 
         header {
-            text-align: center;
-            padding: 1rem 0;
+            text-align: left;
+            padding: 1rem;
             color: black;
             font-size: 2rem;
-            font-weight: bold;
+            font-weight: 700;
             position: fixed;
             width: 100%;
             top: 0;
+            left: 0;
             background-color: transparent; /* Ingen bakgrund */
         }
 
@@ -39,10 +41,21 @@
         #photo-gallery img {
             display: inline-block;
             width: auto;
-            height: 90vh; /* Gör bilderna tillräckligt stora för att ta upp nästan hela sidan */
+            height: 50vh; /* Gör bilderna mindre, anpassat för både dator och mobil */
             margin-right: 10px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsiv design - mindre skärmar */
+        @media (max-width: 768px) {
+            header {
+                font-size: 1.5rem;
+            }
+
+            #photo-gallery img {
+                height: 40vh; /* Minska bildstorleken för mobil */
+            }
         }
 
         /* Gör det möjligt att scrolla horisontellt */
