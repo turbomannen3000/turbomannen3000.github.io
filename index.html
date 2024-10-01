@@ -101,7 +101,15 @@
     </div>
 
     <script>
-        const apiKey = '91d5c5d2c45fabb74d5b6c0f46baec89'; // Ersätt med din API-nyckel
+        let apiKey;
+
+        // Funktion för att hämta API-nyckeln
+        async function loadApiKey() {
+            const response = await fetch('api_key.js');
+            const text = await response.text();
+            eval(text); // Utvärdera JavaScript-koden som sätts i api_key.js
+        }
+
         const userId = '60602420@N05'; // Ditt Flickr-användar-ID
 
         // Funktion för att hämta bilder från Flickr
@@ -144,7 +152,10 @@
         };
 
         // Hämta och visa bilder när sidan laddas
-        window.onload = fetchPhotos;
+        window.onload = async () => {
+            await loadApiKey();
+            fetchPhotos();
+        };
     </script>
 </body>
 </html>
