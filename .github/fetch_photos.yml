@@ -1,1 +1,25 @@
+name: Fetch Flickr Photos
 
+on:
+  workflow_dispatch: # Manuell körning
+
+jobs:
+  fetch-photos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch photos from Flickr
+        run: |
+          curl -o photos.json "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${{ secrets.FLICKR_API_KEY }}&user_id=60602420@N05&format=json&nojsoncallback=1"
+
+      - name: Commit and push photos
+        run: |
+          git config --local user.email "your-email@example.com"
+          git config --local user.name "Your Name"
+          git add photos.json
+          git commit -m "Update photos" || echo "No changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
