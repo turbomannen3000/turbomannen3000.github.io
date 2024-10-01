@@ -71,19 +71,20 @@
         const container = document.getElementById('photo-container');
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modalImg');
+        const apiKey = 'DIN_API_NYCKEL_HÄR'; // Ersätt med din API-nyckel
 
         async function fetchPhotos() {
-            const response = await fetch('https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1');
+            const response = await fetch(`https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=60602420@N05&format=json&nojsoncallback=1`);
             const data = await response.json();
-            displayPhotos(data.items);
+            displayPhotos(data.photos.photo);
         }
 
         function displayPhotos(photos) {
             photos.forEach(photo => {
                 const img = document.createElement('img');
-                img.src = photo.media.m;  // Lägger till foto
+                img.src = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_m.jpg`; // Lägger till foto
                 img.alt = photo.title;
-                img.onclick = () => openModal(photo.media.m); // Öppna modal vid klick
+                img.onclick = () => openModal(`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`); // Öppna modal vid klick
                 container.appendChild(img);
             });
         }
@@ -97,7 +98,7 @@
             modal.style.display = 'none';
         }
 
-        // Hämta bilder från Flickr RSS
+        // Hämta bilder från Flickr
         fetchPhotos();
     </script>
 </body>
