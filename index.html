@@ -72,15 +72,14 @@
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modalImg');
 
-        function fetchPhotos() {
-            const flickrUrl = `https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1&jsoncallback=displayPhotos`;
-            const script = document.createElement('script');
-            script.src = flickrUrl;
-            document.body.appendChild(script);
+        async function fetchPhotos() {
+            const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1');
+            const data = await response.json();
+            displayPhotos(data.items);
         }
 
-        function displayPhotos(data) {
-            data.items.forEach(photo => {
+        function displayPhotos(photos) {
+            photos.forEach(photo => {
                 const img = document.createElement('img');
                 img.src = photo.media.m;
                 img.alt = photo.title;
