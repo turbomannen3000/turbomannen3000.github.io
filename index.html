@@ -120,7 +120,7 @@
         function displayPhotos(photos) {
             const gallery = document.getElementById('photo-gallery');
             photos.forEach(photo => {
-                const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+                const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_h.jpg`; // Ändrat till 'h' för högre upplösning
                 const imgElement = document.createElement('img');
                 imgElement.src = imgSrc;
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
