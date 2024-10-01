@@ -71,7 +71,7 @@
         const container = document.getElementById('photo-container');
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modalImg');
-        const apiKey = 'DIN_API_NYCKEL_HÄR'; // Ersätt med din API-nyckel
+        const apiKey = '91d5c5d2c45fabb74d5b6c0f46baec89'; // Ersätt med din API-nyckel
 
         async function fetchPhotos() {
             const response = await fetch(`https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=60602420@N05&format=json&nojsoncallback=1`);
