@@ -120,11 +120,21 @@
         function displayPhotos(photos) {
             const gallery = document.getElementById('photo-gallery');
             photos.forEach(photo => {
-                const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_h.jpg`; // Ändrat till 'h' för högre upplösning
+                // Försök att hämta den högre upplösningen och fallbacka till den lägre
+                const imgSrcHigh = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_h.jpg`; // Hög upplösning
+                const imgSrcLow = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`; // Låg upplösning (fallback)
+
                 const imgElement = document.createElement('img');
-                imgElement.src = imgSrc;
+                imgElement.src = imgSrcHigh; // Använd högre upplösning först
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
-                imgElement.onclick = () => openModal(imgSrc); // Öppna modal på klick
+
+                // Försök att ladda högre upplösning först
+                imgElement.onerror = () => {
+                    console.warn(`Failed to load high resolution image: ${imgSrcHigh}. Falling back to lower resolution.`);
+                    imgElement.src = imgSrcLow; // Använd lägre upplösning om den högre misslyckas
+                };
+
+                imgElement.onclick = () => openModal(imgSrcHigh); // Öppna modal på klick
                 gallery.appendChild(imgElement);
             });
         }
