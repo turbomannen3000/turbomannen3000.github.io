@@ -10,23 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # Använd den senaste versionen av actions/checkout
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Använd den senaste versionen av actions/setup-node
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specifika versionen av Node.js att använda
-
-      - name: Install dependencies
-        run: npm install axios
+          node-version: '20'  # eller '18' om du vill testa det
 
       - name: Fetch photos from Flickr
-        run: node fetch-photos.js
+        run: |
+          echo "Fetching photos..."
+          node fetch-photos.js
 
       - name: Commit photos.json
         run: |
           git config --local user.email "your-email@example.com"  # Byt ut med din e-post
           git config --local user.name "Your Name"  # Byt ut med ditt namn
           git add photos.json
-          git commit -m "Update photos.json" || echo "No changes to commit"  # Undvik fel om inga ändringar
+          git commit -m "Update photos.json" || echo "No changes to commit"
           git push
