@@ -101,12 +101,12 @@
     </div>
 
     <script>
-        const apiKey = 'DIN_FLICKR_API_NYCKEL'; // Ersätt med din API-nyckel
+        const apiKey = '91d5c5d2c45fabb74d5b6c0f46baec89'; // Ersätt med din API-nyckel
         const userId = '60602420@N05'; // Ditt Flickr-användar-ID
 
         // Funktion för att hämta bilder från Flickr
         async function fetchPhotos() {
-            const url = https://www.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1;
+            const url = `https://www.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
             try {
                 const response = await fetch(url);
                 const data = await response.json();
@@ -120,7 +120,7 @@
         function displayPhotos(photos) {
             const gallery = document.getElementById('photo-gallery');
             photos.forEach(photo => {
-                const imgSrc = https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg;
+                const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
                 const imgElement = document.createElement('img');
                 imgElement.src = imgSrc;
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
