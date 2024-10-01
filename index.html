@@ -9,6 +9,8 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             color: #333;
+            margin: 0;
+            overflow-x: hidden;
         }
 
         header {
@@ -16,18 +18,28 @@
             padding: 2rem 0;
             background-color: #222;
             color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        main {
+            padding-top: 150px; /* Skapa utrymme för headern */
+            white-space: nowrap; /* Se till att bilderna visas i rad */
+            overflow-x: auto;
+            overflow-y: hidden;
         }
 
         #photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            padding: 1rem;
+            display: inline-block;
         }
 
         #photo-gallery img {
-            width: 100%;
-            height: auto;
+            display: inline-block;
+            width: auto;
+            height: 90vh; /* Gör bilderna tillräckligt stora för att ta upp nästan hela sidan */
+            margin-right: 10px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -40,12 +52,13 @@
             position: fixed;
             width: 100%;
             bottom: 0;
+            z-index: 1000;
         }
 
-        @media (max-width: 768px) {
-            #photo-gallery {
-                grid-template-columns: 1fr;
-            }
+        /* Gör det möjligt att scrolla horisontellt */
+        body, html {
+            height: 100%;
+            width: 100%;
         }
     </style>
 </head>
