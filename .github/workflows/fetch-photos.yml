@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3  # Använd den senaste versionen av actions/setup-node
         with:
-          node-version: '20'  # Specifika versionen av Node.js att använda
+          node-version: '18'  # Specifika versionen av Node.js att använda
 
       - name: Install dependencies
         run: npm install axios
