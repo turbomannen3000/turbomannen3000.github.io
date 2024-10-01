@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Philip Stockenhed Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;700&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
     <style>
         body {
             font-family: 'Teko', sans-serif;
@@ -101,18 +101,26 @@
     </div>
 
     <script>
-        // Funktion för att hämta bilder från JSON-fil
+        const apiKey = 'DIN_FLICKR_API_NYCKEL'; // Ersätt med din API-nyckel
+        const userId = '60602420@N05'; // Ditt Flickr-användar-ID
+
+        // Funktion för att hämta bilder från Flickr
         async function fetchPhotos() {
-            const response = await fetch('photos.json'); // Hämta JSON-filen
-            const data = await response.json(); // Omvandla till JSON
-            displayPhotos(data.photos.photo); // Skicka foton till display-funktionen
+            const url = https://www.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                displayPhotos(data.photos.photo);
+            } catch (error) {
+                console.error('Error fetching photos:', error);
+            }
         }
 
         // Funktion för att visa bilderna på sidan
         function displayPhotos(photos) {
             const gallery = document.getElementById('photo-gallery');
             photos.forEach(photo => {
-                const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+                const imgSrc = https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg;
                 const imgElement = document.createElement('img');
                 imgElement.src = imgSrc;
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
