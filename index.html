@@ -72,14 +72,15 @@
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modalImg');
 
-        async function fetchPhotos() {
-            const response = await fetch('https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1');
-            const data = await response.json();
-            displayPhotos(data.items);
+        function fetchPhotos() {
+            const flickrUrl = `https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1&jsoncallback=displayPhotos`;
+            const script = document.createElement('script');
+            script.src = flickrUrl;
+            document.body.appendChild(script);
         }
 
-        function displayPhotos(photos) {
-            photos.forEach(photo => {
+        function displayPhotos(data) {
+            data.items.forEach(photo => {
                 const img = document.createElement('img');
                 img.src = photo.media.m;
                 img.alt = photo.title;
