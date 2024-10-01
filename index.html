@@ -73,7 +73,7 @@
         const modalImg = document.getElementById('modalImg');
 
         async function fetchPhotos() {
-            const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1');
+            const response = await fetch('https://api.flickr.com/services/feeds/photos_public.gne?id=60602420@N05&format=json&nojsoncallback=1');
             const data = await response.json();
             displayPhotos(data.items);
         }
@@ -81,7 +81,7 @@
         function displayPhotos(photos) {
             photos.forEach(photo => {
                 const img = document.createElement('img');
-                img.src = photo.media.m;
+                img.src = photo.media.m;  // Lägger till foto
                 img.alt = photo.title;
                 img.onclick = () => openModal(photo.media.m); // Öppna modal vid klick
                 container.appendChild(img);
@@ -97,6 +97,7 @@
             modal.style.display = 'none';
         }
 
+        // Hämta bilder från Flickr RSS
         fetchPhotos();
     </script>
 </body>
