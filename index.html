@@ -34,6 +34,16 @@
             overflow-y: hidden;
         }
 
+        /* Döljer horisontell scrollbar på desktop */
+        main {
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;     /* Firefox */
+        }
+
+        main::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari, Opera */
+        }
+
         #photo-gallery {
             display: inline-block;
         }
