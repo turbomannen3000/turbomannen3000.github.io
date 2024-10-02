@@ -101,31 +101,24 @@
     </div>
 
     <script>
-        const apiKey = '91d5c5d2c45fabb74d5b6c0f46baec89'; // Ersätt med din API-nyckel
-        const userId = '60602420@N05'; // Ditt Flickr-användar-ID
         let photos = [];
         let currentIndex = 0;
 
-        // Funktion för att hämta bilder från Flickr
+        // Funktion för att hämta bilder från din PythonAnywhere API
         async function fetchPhotos() {
-            const url = `https://www.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=${userId}&format=json&nojsoncallback=1`;
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                photos = data.photos.photo;
-                displayPhotos(photos);
-            } catch (error) {
-                console.error('Error fetching photos:', error);
-            }
+            const response = await fetch('https://turbomannen.eu.pythonanywhere.com/fetch_photos');
+            const data = await response.json();
+            photos = data; // Anta att API:n returnerar en lista med objekt som har en url
+            displayPhotos(photos);
         }
 
         // Funktion för att visa bilderna på sidan
         function displayPhotos(photos) {
             const gallery = document.getElementById('photo-gallery');
+            gallery.innerHTML = ''; // Rensa tidigare bilder
             photos.forEach((photo, index) => {
-                const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
                 const imgElement = document.createElement('img');
-                imgElement.src = imgSrc;
+                imgElement.src = photo.url; // Använd URL från API:n
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
                 imgElement.onclick = () => openModal(index); // Öppna modal på klick
                 gallery.appendChild(imgElement);
@@ -157,7 +150,7 @@
         // Funktion för att få URL för aktuell bild
         function getPhotoSrc(index) {
             const photo = photos[index];
-            return `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+            return photo.url; // Använd URL från API:n
         }
 
         // Lyssna på piltangenterna för att byta bild
