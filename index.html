@@ -76,10 +76,6 @@
             max-width: 90%;
             max-height: 90%;
         }
-
-        body.no-scroll {
-            overflow: hidden; /* Dölja scrollning när modalen är öppen */
-        }
     </style>
 </head>
 <body>
@@ -125,19 +121,19 @@
             const modalImg = document.getElementById('modalImg');
             modal.style.display = "flex";
             modalImg.src = getPhotoSrc(currentIndex);
-            document.body.classList.add('no-scroll'); // Lägg till klass för att dölja scrollning
+            document.body.style.overflow = 'hidden'; // Stäng av scrollning
         }
 
         document.getElementById('close').onclick = function() {
             const modal = document.getElementById('myModal');
             modal.style.display = "none";
-            document.body.classList.remove('no-scroll'); // Ta bort klass för scrollning
+            document.body.style.overflow = ''; // Återställ scrollning
         };
 
         document.getElementById('myModal').onclick = function(event) {
             if (event.target === this) {
                 this.style.display = "none";
-                document.body.classList.remove('no-scroll'); // Ta bort klass för scrollning
+                document.body.style.overflow = ''; // Återställ scrollning
             }
         };
 
@@ -157,7 +153,7 @@
                     openModal(currentIndex);
                 } else if (event.key === 'Escape') {
                     modal.style.display = "none";
-                    document.body.classList.remove('no-scroll'); // Ta bort klass för scrollning
+                    document.body.style.overflow = ''; // Återställ scrollning
                 }
             }
         };
