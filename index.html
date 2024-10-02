@@ -34,6 +34,16 @@
             overflow-y: hidden;
         }
 
+        /* Döljer horisontell scrollbar på desktop */
+        main {
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;     /* Firefox */
+        }
+
+        main::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari, Opera */
+        }
+
         #photo-gallery {
             display: inline-block;
         }
@@ -100,7 +110,6 @@
     <script>
         let photos = [];
         let currentIndex = 0;
-        let scrollPosition = 0;
 
         // Funktion för att hämta bilder från din PythonAnywhere API
         async function fetchPhotos() {
@@ -128,14 +137,7 @@
             currentIndex = index;
             const modal = document.getElementById('myModal');
             const modalImg = document.getElementById('modalImg');
-            
-            // Spara den aktuella scrollpositionen och fixera kroppens position
-            scrollPosition = window.pageYOffset;
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollPosition}px`;
-            document.body.style.width = '100%';  // Bevara kroppens bredd så det inte "hoppar"
             document.body.classList.add('modal-open'); // Förhindra bakgrundsskrollning
-
             modal.style.display = "flex"; // Visa modal
             modalImg.src = photos[currentIndex].url; // Använd högupplöst version i modalen
         }
@@ -145,11 +147,6 @@
             const modal = document.getElementById('myModal');
             modal.style.display = "none"; // Dölj modal
             document.body.classList.remove('modal-open'); // Återställ bakgrundsskrollning
-
-            // Återställ kroppens position till den sparade scrollpositionen
-            document.body.style.position = '';
-            document.body.style.top = '';
-            window.scrollTo(0, scrollPosition); // Återställ scrollpositionen
         };
 
         // Stäng modal när man klickar utanför bilden
@@ -157,11 +154,6 @@
             if (event.target === this) {
                 this.style.display = "none";
                 document.body.classList.remove('modal-open'); // Återställ bakgrundsskrollning
-
-                // Återställ kroppens position och scrolla tillbaka
-                document.body.style.position = '';
-                document.body.style.top = '';
-                window.scrollTo(0, scrollPosition); // Återställ scrollpositionen
             }
         };
 
@@ -178,11 +170,6 @@
                 } else if (event.key === 'Escape') {
                     modal.style.display = "none"; // Stäng modal med Esc
                     document.body.classList.remove('modal-open'); // Återställ bakgrundsskrollning
-
-                    // Återställ kroppens position och scrolla tillbaka
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    window.scrollTo(0, scrollPosition); // Återställ scrollpositionen
                 }
             }
         };
