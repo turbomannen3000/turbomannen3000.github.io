@@ -11,7 +11,7 @@
             background-color: #f0f0f0;
             color: #333;
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Inaktivera horisontell scrollning */
             transition: overflow 0.3s;
         }
 
@@ -77,9 +77,8 @@
             max-height: 90%;
         }
 
-        body, html {
-            height: 100%;
-            width: 100%;
+        body.no-scroll {
+            overflow: hidden; /* Dölja scrollning när modalen är öppen */
         }
     </style>
 </head>
@@ -126,25 +125,19 @@
             const modalImg = document.getElementById('modalImg');
             modal.style.display = "flex";
             modalImg.src = getPhotoSrc(currentIndex);
-            // Förhindra scrollning på body och html
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden'; // Lägg till denna rad
+            document.body.classList.add('no-scroll'); // Lägg till klass för att dölja scrollning
         }
 
         document.getElementById('close').onclick = function() {
             const modal = document.getElementById('myModal');
             modal.style.display = "none";
-            // Återställ scrollning på body och html
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = ''; // Lägg till denna rad
+            document.body.classList.remove('no-scroll'); // Ta bort klass för scrollning
         };
 
         document.getElementById('myModal').onclick = function(event) {
             if (event.target === this) {
                 this.style.display = "none";
-                // Återställ scrollning på body och html
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = ''; // Lägg till denna rad
+                document.body.classList.remove('no-scroll'); // Ta bort klass för scrollning
             }
         };
 
@@ -164,9 +157,7 @@
                     openModal(currentIndex);
                 } else if (event.key === 'Escape') {
                     modal.style.display = "none";
-                    // Återställ scrollning på body och html
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = ''; // Lägg till denna rad
+                    document.body.classList.remove('no-scroll'); // Ta bort klass för scrollning
                 }
             }
         };
