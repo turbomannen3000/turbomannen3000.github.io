@@ -126,22 +126,22 @@
             const modalImg = document.getElementById('modalImg');
             modal.style.display = "flex";
             modalImg.src = getPhotoSrc(currentIndex);
-            document.body.style.overflow = 'hidden'; // Döljer scrollningen på body
-            document.body.style.position = 'fixed'; // Fixerar body
+            // Förhindra scrollning på body
+            document.body.style.overflow = 'hidden'; 
         }
 
         document.getElementById('close').onclick = function() {
             const modal = document.getElementById('myModal');
             modal.style.display = "none";
-            document.body.style.overflow = ''; // Återställ scrollningen på body
-            document.body.style.position = ''; // Återställ position
+            // Återställ scrollning på body
+            document.body.style.overflow = ''; 
         };
 
         document.getElementById('myModal').onclick = function(event) {
             if (event.target === this) {
                 this.style.display = "none";
-                document.body.style.overflow = ''; // Återställ scrollningen på body
-                document.body.style.position = ''; // Återställ position
+                // Återställ scrollning på body
+                document.body.style.overflow = ''; 
             }
         };
 
@@ -161,8 +161,8 @@
                     openModal(currentIndex);
                 } else if (event.key === 'Escape') {
                     modal.style.display = "none";
-                    document.body.style.overflow = ''; // Återställ scrollningen på body
-                    document.body.style.position = ''; // Återställ position
+                    // Återställ scrollning på body
+                    document.body.style.overflow = ''; 
                 }
             }
         };
