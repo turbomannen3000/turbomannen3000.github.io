@@ -103,6 +103,8 @@
     <script>
         const apiKey = '91d5c5d2c45fabb74d5b6c0f46baec89'; // Ersätt med din API-nyckel
         const userId = '60602420@N05'; // Ditt Flickr-användar-ID
+        let photos = [];
+        let currentIndex = 0;
 
         // Funktion för att hämta bilder från Flickr
         async function fetchPhotos() {
@@ -110,7 +112,8 @@
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                displayPhotos(data.photos.photo);
+                photos = data.photos.photo;
+                displayPhotos(photos);
             } catch (error) {
                 console.error('Error fetching photos:', error);
             }
@@ -119,28 +122,58 @@
         // Funktion för att visa bilderna på sidan
         function displayPhotos(photos) {
             const gallery = document.getElementById('photo-gallery');
-            photos.forEach(photo => {
+            photos.forEach((photo, index) => {
                 const imgSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
                 const imgElement = document.createElement('img');
                 imgElement.src = imgSrc;
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
-                imgElement.onclick = () => openModal(imgSrc); // Öppna modal på klick
+                imgElement.onclick = () => openModal(index); // Öppna modal på klick
                 gallery.appendChild(imgElement);
             });
         }
 
         // Funktion för att öppna modal med större bild
-        function openModal(imgSrc) {
+        function openModal(index) {
+            currentIndex = index;
             const modal = document.getElementById('myModal');
             const modalImg = document.getElementById('modalImg');
             modal.style.display = "flex"; // Visa modal
-            modalImg.src = imgSrc;
+            modalImg.src = getPhotoSrc(currentIndex);
         }
 
         // Funktion för att stänga modal
         document.getElementById('close').onclick = function() {
             const modal = document.getElementById('myModal');
             modal.style.display = "none"; // Dölja modal
+        };
+
+        // Stäng modal när man klickar utanför bilden
+        document.getElementById('myModal').onclick = function(event) {
+            if (event.target === this) {
+                this.style.display = "none";
+            }
+        };
+
+        // Funktion för att få URL för aktuell bild
+        function getPhotoSrc(index) {
+            const photo = photos[index];
+            return `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+        }
+
+        // Lyssna på piltangenterna för att byta bild
+        document.onkeydown = function(event) {
+            const modal = document.getElementById('myModal');
+            if (modal.style.display === "flex") {
+                if (event.key === 'ArrowRight') {
+                    currentIndex = (currentIndex + 1) % photos.length; // Nästa bild
+                    openModal(currentIndex);
+                } else if (event.key === 'ArrowLeft') {
+                    currentIndex = (currentIndex - 1 + photos.length) % photos.length; // Föregående bild
+                    openModal(currentIndex);
+                } else if (event.key === 'Escape') {
+                    modal.style.display = "none"; // Stäng modal med Esc
+                }
+            }
         };
 
         // Hämta och visa bilder när sidan laddas
