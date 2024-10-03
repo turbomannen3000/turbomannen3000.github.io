@@ -162,20 +162,46 @@
             const modalImg = document.getElementById('modalImg');
             modal.style.display = "flex"; // Visa modal
             modalImg.src = getPhotoSrc(currentIndex);
+
+            // Lyssna på piltangenterna
+            document.addEventListener('keydown', handleKeyNavigation);
         }
 
-        // Funktion för att stänga modal
+        // Funktion för att stänga modal och ta bort tangentbordslyssnaren
         document.getElementById('close').onclick = function() {
-            const modal = document.getElementById('myModal');
-            modal.style.display = "none"; // Dölja modal
+            closeModal();
         };
 
-        // Stäng modal när man klickar utanför bilden
+        // Funktion för att stänga modal när man klickar utanför bilden
         document.getElementById('myModal').onclick = function(event) {
             if (event.target === this) {
-                this.style.display = "none";
+                closeModal();
             }
         };
+
+        // Funktion för att stänga modal
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = "none"; // Dölj modal
+            document.removeEventListener('keydown', handleKeyNavigation); // Ta bort lyssnaren när modalen stängs
+        }
+
+        // Funktion för att hantera piltangentnavigering
+        function handleKeyNavigation(event) {
+            if (event.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1) % photos.length; // Nästa bild
+                updateModalImage();
+            } else if (event.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + photos.length) % photos.length; // Föregående bild
+                updateModalImage();
+            }
+        }
+
+        // Uppdatera modalbilden
+        function updateModalImage() {
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = getPhotoSrc(currentIndex);
+        }
 
         // Funktion för att få URL för aktuell bild
         function getPhotoSrc(index) {
