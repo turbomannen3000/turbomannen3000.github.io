@@ -123,6 +123,7 @@
             const data = await response.json();
             photos = data; // Anta att API:n returnerar en lista med objekt som har en url
             displayPhotos(photos.slice(0, photosToLoad)); // Visa endast de första fem bilderna
+            currentPhotoIndex += photosToLoad; // Uppdatera index för nästa laddning
         }
 
         // Funktion för att visa bilderna på sidan
@@ -132,7 +133,7 @@
                 const imgElement = document.createElement('img');
                 imgElement.src = photo.url; // Använd URL från API:n
                 imgElement.alt = photo.title; // Lägg till alt-text för tillgänglighet
-                imgElement.onclick = () => openModal(currentPhotoIndex + index); // Öppna modal på klick
+                imgElement.onclick = () => openModal(currentPhotoIndex - photosToLoad + index); // Öppna modal på klick
                 gallery.appendChild(imgElement);
 
                 // Ladda bilder gradvis
@@ -179,7 +180,7 @@
 
         // Funktion för att ladda fler bilder när man skrollar ner
         function loadMorePhotos() {
-            if (currentPhotoIndex + photosToLoad < photos.length) {
+            if (currentPhotoIndex < photos.length) {
                 const nextPhotos = photos.slice(currentPhotoIndex, currentPhotoIndex + photosToLoad);
                 displayPhotos(nextPhotos);
                 currentPhotoIndex += photosToLoad; // Uppdatera index för nästa laddning
