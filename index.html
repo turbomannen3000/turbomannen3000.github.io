@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;700&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;700&family=Permanent+Marker&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
     <style>
         body {
             font-family: 'Teko', sans-serif;
@@ -26,10 +26,17 @@
             left: 0;
             background-color: transparent; /* Ingen bakgrund */
             z-index: 1000;
+            cursor: pointer; /* Pekare för klickbar header */
         }
 
         main {
             padding-top: 100px; /* Skapa utrymme för headern */
+        }
+
+        /* Stil för Permanent Marker */
+        .permanent-marker-regular {
+            font-family: 'Permanent Marker', cursive;
+            color: #df9b2a;
         }
 
         #photo-gallery {
@@ -102,7 +109,7 @@
     </style>
 </head>
 <body>
-    <header>
+    <header id="header">
         PHILIP STOCKENHED
     </header>
 
@@ -228,6 +235,12 @@
 
         // Hämta och visa bilder när sidan laddas
         window.onload = fetchPhotos;
+
+        // Lägg till händelse för att ändra typsnitt och färg vid klick på headern
+        const headerElement = document.getElementById('header');
+        headerElement.addEventListener('click', () => {
+            headerElement.classList.toggle('permanent-marker-regular');
+        });
     </script>
 </body>
-</html>
+</html
