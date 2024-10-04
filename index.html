@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;700&family=Permanent+Marker&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Teko', sans-serif;
+            font-family: 'Permanent Marker', cursive;
             background-color: #f0f0f0;
             color: #333;
             margin: 0;
@@ -17,26 +17,26 @@
         header {
             text-align: left;
             padding: 1rem;
-            color: black;
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 400;
             position: fixed;
             width: 100%;
             top: 0;
             left: 0;
-            background-color: transparent; /* Ingen bakgrund */
+            background-color: transparent;
             z-index: 1000;
-            cursor: pointer; /* Pekare för klickbar header */
+            display: inline-block;
+            color: #000000;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEyNyIgaGVpZ2h0PSIyMzYiIHZpZXdCb3g9IjAgMCAxMTI3IDIzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyNS4wNDMgMy44MTM4NUMxNDQuMDI1IDIzLjI5NTQgMTM1LjkxIDUwLjg0MTMgMTUyLjg3NCA2Ni4wNjA2QzE2OS44MzggODEuMjgxOSAyMDcuNTM4IDc2LjY2MjMgMjI4LjY0NyAxMDQuMzQ2QzI0OS43NTcgMTMyLjAzMSAyODcuMzc1IDE0MC4zOTkgMzA1Ljg1MyAxNzMuODQ5QzMyNC4zMzEgMjA3LjMgMzYxLjU3NiAyMjcuNjcgMzgxLjU2NCAyMjMuODg5QzQwMS41NTIgMjIwLjEwMSA0MjYuNzE3IDIwOC4yODggNDUzLjEzNyAyMDkuNTAyQzQ4MS4zNzUgMjEwLjc2NyA1MTguMzgzIDIxNy4wMjcgNTUxLjczMiAyMDkuNzI3QzU4NS4wODIgMjAyLjQyNyA2MTIuMjc2IDIxMC4yNzIgNjM2LjMxNiAyMTMuNDU5QzY2MC4zNTUgMjE2LjY0NyA2ODEuMjkgMjE2LjMwMiA2OTkuMTA5IDIwMy4yMDVDNzE2LjkyMyAxOTAuMTA4IDczMy43MzggMTYzLjc2MiA3MzcuOTgzIDEzOS4wMTRDNzQyLjIzIDExNC4yNjYgNzM0Ljk1NiA5Ni43OTg3IDc0NS43NjMgNzEuMTA4M0M3NTYuNTcgNDUuNDE3OSA3ODQuMzA3IDEwLjk0NDEgODA5LjczMyAxMS43ODZDNzU0LjI4OCA0LjcxMzUzIDY2My4zMzggMzEuNjQ0NSA2MjUuNDU1IDI2LjUzNDRDNjA4LjQ4OSAyNC42ODMxIDU4Ni41NTMgMTYuMDkyIDU3NC4yODggMTMuMzMwN0M1NjEuNjAyIDEwLjU3MTUgNTMzLjc3NCAtNS4zNzA2NSA1MTAuNDgzIDMuODk5ODdDNTA3LjAwMiA1LjE2MzcxIDQ4OC43MDUgOS4wNzY5MSA0NzAuOTg3IDExLjczOTlDNDUzLjI2OSAxNC40MDMzIDQyMy4wNzQgMTguNzg2NiA0MTIuNjYgMjguMjQ2QzQwMi4yNTMgMzcuNzA1NSAzODIuMTA5IDYyLjM3NDYgMzc0Ljk0MSA2OC44NDI5QzM2Ny43NzQgNzUuMzEgMzQwLjgzOCA3NS4yMjYgMzMwLjkwNiA4NC43MTcyQzMyMS4wNzQgOTQuMjA3MyAzMDEuNTA3IDEyOS4xMjkgMjg2LjU3MyAxMzguMTgyQzI3MS42MyAxNDcuMjMxIDI0Ni4xMTggMTU2LjEzMiAyMjYuMTUgMTQ0LjkwMkMyMDYuMTgyIDEzMy42NzIgMTcwLjM4OCA5OS4xOTgxIDE1NS42OTkgNzguMjMzM0MxNDAuODExIDU3LjI3ODUgMTE1LjcwMSA1Ljg4MjAzIDEyNS4wNDMgMy44MTM4NVoiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+Cg==');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            padding: 1rem;
+            line-height: 1.2;
         }
 
         main {
-            padding-top: 100px; /* Skapa utrymme för headern */
-        }
-
-        /* Stil för Permanent Marker */
-        .permanent-marker-regular {
-            font-family: 'Permanent Marker', cursive;
-            color: #df9b2a;
+            padding-top: 100px;
         }
 
         #photo-gallery {
@@ -52,38 +52,35 @@
         #photo-gallery img {
             display: inline-block;
             width: auto;
-            height: 50vh; /* Anpassa höjden för desktop */
+            height: 50vh;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            opacity: 0; /* Starta med osynliga bilder */
-            transition: opacity 0.5s; /* Gör bilderna synliga med en övergång */
+            opacity: 0;
+            transition: opacity 0.5s;
         }
 
-        /* Mobil-vy: bilderna i vertikalt läge */
         @media (max-width: 768px) {
             #photo-gallery {
                 flex-wrap: wrap;
                 flex-direction: column;
                 overflow-x: hidden;
                 overflow-y: auto;
-                align-items: center; /* Centrera bilderna i mobil */
+                align-items: center;
             }
 
             #photo-gallery img {
                 height: auto;
-                width: 90%; /* Anpassa bredden för mobil */
+                width: 90%;
                 margin-bottom: 10px;
             }
 
-            /* Ta bort modal-funktion för mobil-vy */
             #myModal {
                 display: none !important;
             }
         }
 
-        /* Modal stil */
         .modal {
-            display: none; /* Dölj modal som standard */
+            display: none;
             position: fixed;
             z-index: 1000;
             left: 0;
@@ -91,7 +88,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8); /* Svart bakgrund med transparens */
+            background-color: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
         }
@@ -101,7 +98,6 @@
             max-height: 90%;
         }
 
-        /* Gör det möjligt att scrolla horisontellt */
         body, html {
             height: 100%;
             width: 100%;
@@ -109,7 +105,7 @@
     </style>
 </head>
 <body>
-    <header id="header">
+    <header>
         PHILIP STOCKENHED
     </header>
 
@@ -117,7 +113,6 @@
         <section id="photo-gallery"></section>
     </main>
 
-    <!-- Modal för att visa större bild -->
     <div id="myModal" class="modal">
         <span id="close" style="color: white; font-size: 30px; position: absolute; top: 20px; right: 30px; cursor: pointer;">&times;</span>
         <img id="modalImg" src="">
