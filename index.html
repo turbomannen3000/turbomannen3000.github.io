@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;700&display=swap" rel="stylesheet"> <!-- Länk till Google Fonts -->
     <style>
         body {
-            font-family: 'Fraunces';
+            font-family: 'Fraunces', serif; /* Använd Fraunces för hela sidan */
             background-color: #f0f0f0;
             color: #333;
             margin: 0;
@@ -18,8 +18,8 @@
             text-align: left;
             padding: 1rem;
             color: black;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.5rem; /* Rubrikens storlek */
+            font-weight: 700; /* Typsnittets vikt för header */
             position: fixed;
             width: 100%;
             top: 0;
@@ -33,9 +33,15 @@
             padding-top: 100px; /* Skapa utrymme för headern */
         }
 
-        /* Stil för Permanent Marker */
-        .permanent-marker-regular {
-            color: #df9b2a;
+        /* Klass för Fraunces med unika inställningar */
+        .fraunces-unique {
+            font-family: "Fraunces", serif;
+            font-optical-sizing: auto;
+            font-weight: 700; /* Ändra till önskad vikt, t.ex. 300, 400, 700, 900 */
+            font-style: normal;
+            font-variation-settings:
+                "SOFT" 0,
+                "WONK" 0;
         }
 
         #photo-gallery {
@@ -108,7 +114,7 @@
     </style>
 </head>
 <body>
-    <header id="header">
+    <header id="header" class="fraunces-unique">
         PHILIP STOCKENHED
     </header>
 
@@ -230,16 +236,3 @@
             if (scrollTop + clientHeight >= scrollHeight - 5) { // Om vi är nära botten av sidan
                 loadMorePhotos();
             }
-        });
-
-        // Hämta och visa bilder när sidan laddas
-        window.onload = fetchPhotos;
-
-        // Lägg till händelse för att ändra typsnitt och färg vid klick på headern
-        const headerElement = document.getElementById('header');
-        headerElement.addEventListener('click', () => {
-            headerElement.classList.toggle('permanent-marker-regular');
-        });
-    </script>
-</body>
-</html>
