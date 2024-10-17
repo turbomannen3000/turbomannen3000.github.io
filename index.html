@@ -51,8 +51,8 @@
             height: 50vh;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.5s;
+            opacity: 0; /* Startar osynlig */
+            transition: opacity 0.5s ease-in; /* Fade in för lazy load */
         }
 
         @media (max-width: 768px) {
@@ -180,17 +180,19 @@
                 const imgElement = document.createElement('img');
                 imgElement.src = photo.url;
                 imgElement.alt = photo.title;
+                imgElement.loading = "lazy"; // Nyckeln för lazy loading
                 gallery.appendChild(imgElement);
 
-                // Ladda bilder gradvis
-                const observer = new IntersectionObserver(entries => {
+                // Lazy loading med IntersectionObserver
+                const observer = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            imgElement.style.opacity = 1;
-                            observer.unobserve(imgElement);
+                            entry.target.style.opacity = 1; // Gör bilden synlig
+                            observer.unobserve(entry.target); // Sluta observera när bilden är synlig
                         }
                     });
-                });
+                }, { threshold: 0.1 });
+
                 observer.observe(imgElement);
             });
         }
