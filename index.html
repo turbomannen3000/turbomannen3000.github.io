@@ -132,7 +132,7 @@
 
         // Funktion för att hämta bilder från din PythonAnywhere API
         async function fetchPhotos() {
-            const response = await fetch('https://turbomannen.eu.pythonanywhere');
+            const response = await fetch('https://turbomannen.eu.pythonanywhere.com/fetch_photos');
             const data = await response.json();
             photos = data;
 
