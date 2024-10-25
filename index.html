@@ -11,7 +11,7 @@
             background-color: #f0f0f0;
             color: #333;
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Förhindra scrollning */
         }
 
         header {
@@ -26,7 +26,6 @@
             left: 0;
             background-color: transparent;
             z-index: 1000;
-            cursor: pointer;
             opacity: 0; /* Dölj headern initialt */
             transition: opacity 1s ease-in; /* Fade in transition */
         }
@@ -69,10 +68,6 @@
                 width: 90%;
                 margin-bottom: 10px;
             }
-
-            #myModal {
-                display: none !important;
-            }
         }
 
         /* Fullscreen visning av slumpmässig bild */
@@ -86,6 +81,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            display: none; /* Dölja fullscreen-bilden initialt */
         }
 
         /* Centrerad header text ovanpå bilden */
@@ -99,6 +95,8 @@
             text-align: center;
             font-weight: 700;
             z-index: 1000;
+            opacity: 1; /* Visa texten initialt */
+            transition: opacity 0.5s; /* Lägga till övergång för att dölja texten */
         }
 
         /* Fade-out animation */
@@ -110,6 +108,17 @@
         /* Dölja fullscreen-bild efter fade */
         .fade-out {
             animation: fadeOut 2s forwards;
+        }
+
+        /* Copyright stil */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            color: #555;
         }
     </style>
 </head>
@@ -125,52 +134,59 @@
         <section id="photo-gallery"></section>
     </main>
 
+    <footer>
+        &copy; 2024 Philip Stockenhed
+    </footer>
+
     <script>
         let photos = [];
         let currentPhotoIndex = 0;
-        const photosToLoad = 5;
+        const displayDuration = 3000; // Tid för varje bild
+        let isFullscreenActive = false; // Flagga för att kontrollera helskärmsläge
 
         // Funktion för att hämta bilder från din PythonAnywhere API
         async function fetchPhotos() {
             const response = await fetch('https://turbomannen.eu.pythonanywhere.com/fetch_photos');
             const data = await response.json();
-            photos = data;
+            photos = data; // Spara bilderna i sin ursprungliga ordning
 
-            // Välj en slumpmässig bild
-            const randomIndex = Math.floor(Math.random() * photos.length);
-            const randomPhoto = photos[randomIndex];
+            // Visa första bilden och headern
+            displayFullscreen(shuffleArray(photos)[currentPhotoIndex].url); // Visa första bilden i slumpmässig ordning
 
-            // Visa fullscreen-bilden
-            displayFullscreen(randomPhoto.url);
+            // Starta bildväxlingen
+            setTimeout(nextPhoto, displayDuration);
 
-            // Ladda övriga bilder efter fullscreen fade-out
-            setTimeout(() => {
-                hideFullscreen();
-                displayPhotos(photos.slice(0, photosToLoad));
-                currentPhotoIndex += photosToLoad;
-            }, 3000); // 3 sekunders visningstid
+            // Visa övriga bilder i galleriet
+            displayPhotos(photos);
         }
 
-        // Funktion för att visa fullscreen bild och header text
+        // Funktion för att blanda array
+        function shuffleArray(array) {
+            const shuffled = [...array]; // Skapa en kopia av arrayen
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Byt plats
+            }
+            return shuffled;
+        }
+
+        // Funktion för att visa fullscreen bild
         function displayFullscreen(url) {
             const fullscreenImg = document.getElementById('fullscreen-img');
             fullscreenImg.style.backgroundImage = `url(${url})`;
+            fullscreenImg.style.display = 'block'; // Visa fullscreen-bilden
+            isFullscreenActive = true; // Aktivera helskärmsläge
         }
 
-        // Funktion för att dölja fullscreen bilden och visa resten av sidan
-        function hideFullscreen() {
-            const fullscreenImg = document.getElementById('fullscreen-img');
-            const fullscreenHeader = document.getElementById('fullscreen-header');
-            fullscreenImg.classList.add('fade-out');
-            fullscreenHeader.classList.add('fade-out');
-            setTimeout(() => {
-                fullscreenImg.style.display = 'none';
-                fullscreenHeader.style.display = 'none';
+        // Funktion för att gå till nästa bild
+        function nextPhoto() {
+            if (!isFullscreenActive) return; // Avbryt om helskärmsläge inte är aktivt
 
-                // Visa huvudsektionen och headern
-                document.querySelector('main').style.opacity = 1;
-                document.getElementById('header').style.opacity = 1; // Visa headern i vänstra hörnet
-            }, 2000); // Matcha fade-animeringens tid
+            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length; // Cykla till nästa bild
+            displayFullscreen(shuffleArray(photos)[currentPhotoIndex].url); // Visa nästa bild i slumpmässig ordning
+
+            // Efter att ha visat nästa bild, schemalägg nästa byte
+            setTimeout(nextPhoto, displayDuration);
         }
 
         // Funktion för att visa bilderna på sidan
@@ -193,7 +209,18 @@
                 });
                 observer.observe(imgElement);
             });
+            // Visa huvudsektionen efter att bilderna har laddats
+            document.querySelector('main').style.opacity = 1;
         }
+
+        // Lägg till klickhändelse för att dölja fullscreen-bilden
+        document.getElementById('fullscreen-img').addEventListener('click', () => {
+            const fullscreenImg = document.getElementById('fullscreen-img');
+            fullscreenImg.style.display = 'none'; // Dölja fullscreen-bilden när man klickar
+            document.getElementById('fullscreen-header').style.opacity = 0; // Dölja texten
+            isFullscreenActive = false; // Deaktivera helskärmsläge
+            document.getElementById('header').style.opacity = 1; // Visa headern efter att ha stängt helskärmsläget
+        });
 
         fetchPhotos();
     </script>
