@@ -1,117 +1,115 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio – Philip</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Min Fotopportfolio</title>
   <style>
-    :root {
-      --bg: #f5f5f5;
-      --text: #222;
-      --accent: #999;
-    }
-
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
     }
 
-    header {
-      padding: 4rem 2rem 2rem;
-      text-align: center;
+    h1 {
+      margin-bottom: 2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
 
-    header h1 {
-      font-size: 2rem;
-      font-weight: normal;
-      letter-spacing: 0.05em;
-    }
-
-    main {
+    .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
-      padding: 2rem;
-      max-width: 1400px;
-      margin: auto;
+      width: 100%;
+      max-width: 1000px;
     }
 
-    figure {
-      background: white;
+    .photo-card {
       overflow: hidden;
       border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s ease;
+      box-shadow: 0 0 15px rgb(0 0 0 / 0.1);
+      cursor: pointer;
+      background: #fafafa;
+      transition: transform 0.3s ease;
+    }
+    .photo-card:hover {
+      transform: scale(1.03);
     }
 
-    figure:hover {
-      transform: scale(1.01);
-    }
-
-    img {
-      width: 100%;
+    .photo-card img {
       display: block;
+      width: 100%;
       height: auto;
+      object-fit: cover;
+      vertical-align: middle;
+      transition: filter 0.3s ease;
     }
-
-    figcaption {
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      color: var(--accent);
+    .photo-card:hover img {
+      filter: brightness(0.85);
     }
 
     footer {
-      text-align: center;
-      padding: 3rem 1rem;
+      margin-top: 3rem;
       font-size: 0.8rem;
-      color: var(--accent);
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Philip Engström</h1>
-  </header>
-  <main id="gallery">
-    <!-- Bilder laddas här -->
-  </main>
+  <h1>Min Fotopportfolio</h1>
+  <div class="gallery" id="gallery">Laddar bilder...</div>
+
   <footer>
-    © 2025 Philip Engström
+    &copy; 2025 Brunishka
   </footer>
 
   <script>
     const gallery = document.getElementById('gallery');
-    const apiURL = "https://script.google.com/macros/s/AKfycbwhVRbNLkyjnxzarnu8UOBDxtvq-QuyyPF2ptsBiT8DM6S8oeYmqarnxGotWcqNR-1c/exec";
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbwhVRbNLkyjnxzarnu8UOBDxtvq-QuyyPF2ptsBiT8DM6S8oeYmqarnxGotWcqNR-1c/exec';
 
-    fetch(apiURL)
-      .then(res => res.json())
-      .then(data => {
-        data.forEach(photo => {
-          if (photo.url) {
-            const figure = document.createElement('figure');
-            const img = document.createElement('img');
-            img.src = photo.url;
-            img.alt = photo.title || "Untitled";
-            const caption = document.createElement('figcaption');
-            caption.textContent = photo.title || " ";
-            figure.appendChild(img);
-            figure.appendChild(caption);
-            gallery.appendChild(figure);
-          }
+    async function loadPhotos() {
+      try {
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error('Något gick fel vid hämtning av bilder.');
+        const photos = await res.json();
+
+        if (photos.length === 0) {
+          gallery.textContent = 'Inga bilder att visa.';
+          return;
+        }
+
+        gallery.innerHTML = '';
+
+        photos.forEach(photo => {
+          if (!photo.url) return;
+          const card = document.createElement('div');
+          card.className = 'photo-card';
+
+          const img = document.createElement('img');
+          img.src = photo.url;
+          img.alt = photo.title || 'Bild';
+
+          card.appendChild(img);
+          gallery.appendChild(card);
         });
-      })
-      .catch(err => {
-        gallery.innerHTML = '<p style="text-align:center; color: #888">Det gick inte att ladda bilder.</p>';
-        console.error(err);
-      });
+
+      } catch (e) {
+        gallery.textContent = 'Kunde inte ladda bilder: ' + e.message;
+      }
+    }
+
+    loadPhotos();
   </script>
 </body>
 </html>
