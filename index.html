@@ -177,33 +177,49 @@
     }
 
     function displayPhotos(photosToDisplay) {
-      const gallery = document.getElementById('photo-gallery');
-      photosToDisplay.forEach(photo => {
-        const imgElement = document.createElement('img');
-        imgElement.src = photo.url;
-        gallery.appendChild(imgElement);
+  const gallery = document.getElementById('photo-gallery');
 
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              imgElement.style.opacity = 1;
-              observer.unobserve(imgElement);
-            }
-          });
-        });
-        observer.observe(imgElement);
+  photosToDisplay.forEach(photo => {
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // viktigt för canvas-konvertering
+    img.src = photo.url;
+
+    img.onload = () => {
+      // Skapa canvas och konvertera till webp
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      // Konvertera till WebP
+      const webpUrl = canvas.toDataURL('image/webp', 0.8);
+
+      const imgElement = document.createElement('img');
+      imgElement.src = webpUrl;
+      imgElement.dataset.original = photo.url;
+
+      // Klick: öppna originalbild i ny flik
+      imgElement.addEventListener('click', () => {
+        window.open(photo.url, '_blank');
       });
 
-      document.querySelector('main').style.opacity = 1;
-    }
+      gallery.appendChild(imgElement);
 
-    document.getElementById('fullscreen-img').addEventListener('click', () => {
-      const fullscreenImg = document.getElementById('fullscreen-img');
-      fullscreenImg.style.display = 'none';
-      document.getElementById('fullscreen-header').style.opacity = 0;
-      isFullscreenActive = false;
-      document.getElementById('header').style.opacity = 1;
-    });
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            imgElement.style.opacity = 1;
+            observer.unobserve(imgElement);
+          }
+        });
+      });
+      observer.observe(imgElement);
+    };
+  });
+
+  document.querySelector('main').style.opacity = 1;
+});
 
     fetchPhotos();
   </script>
