@@ -1,115 +1,194 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Min Fotopportfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
+      font-family: 'Fraunces', serif;
+      background-color: #f0f0f0;
+      color: #333;
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background: #fff;
-      color: #222;
-      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: left;
+      padding: 1rem;
+      color: black;
+      font-size: 1.5rem;
+      font-weight: 700;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background-color: transparent;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+
+    main {
+      padding-top: 100px;
+      opacity: 0;
+    }
+
+    #photo-gallery {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
     }
 
-    h1 {
-      margin-bottom: 2rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 1000px;
-    }
-
-    .photo-card {
-      overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgb(0 0 0 / 0.1);
+    #photo-gallery img {
+      width: auto;
+      height: 50vh;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       cursor: pointer;
-      background: #fafafa;
-      transition: transform 0.3s ease;
-    }
-    .photo-card:hover {
-      transform: scale(1.03);
+      opacity: 0;
+      transition: opacity 0.5s;
     }
 
-    .photo-card img {
-      display: block;
+    @media (max-width: 768px) {
+      #photo-gallery {
+        flex-wrap: wrap;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+        align-items: center;
+      }
+
+      #photo-gallery img {
+        height: auto;
+        width: 90%;
+        margin-bottom: 10px;
+      }
+    }
+
+    #fullscreen-img {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto;
-      object-fit: cover;
-      vertical-align: middle;
-      transition: filter 0.3s ease;
-    }
-    .photo-card:hover img {
-      filter: brightness(0.85);
+      height: 100%;
+      z-index: 999;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: none;
     }
 
-    footer {
-      margin-top: 3rem;
-      font-size: 0.8rem;
-      color: #888;
+    #fullscreen-header {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2rem;
+      text-align: center;
+      font-weight: 700;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .fade-out {
+      animation: fadeOut 2s forwards;
     }
   </style>
 </head>
 <body>
-  <h1>Min Fotopportfolio</h1>
-  <div class="gallery" id="gallery">Laddar bilder...</div>
+  <header id="header" class="fraunces-unique">
+    PHILIP STOCKENHED
+  </header>
 
-  <footer>
-    &copy; 2025 Brunishka
-  </footer>
+  <div id="fullscreen-img"></div>
+  <div id="fullscreen-header">PHILIP STOCKENHED</div>
+
+  <main>
+    <section id="photo-gallery"></section>
+  </main>
 
   <script>
-    const gallery = document.getElementById('gallery');
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbwhVRbNLkyjnxzarnu8UOBDxtvq-QuyyPF2ptsBiT8DM6S8oeYmqarnxGotWcqNR-1c/exec';
+    let photos = [];
+    let currentPhotoIndex = 0;
+    const displayDuration = 2000;
+    let isFullscreenActive = false;
 
-    async function loadPhotos() {
-      try {
-        const res = await fetch(apiUrl);
-        if (!res.ok) throw new Error('Något gick fel vid hämtning av bilder.');
-        const photos = await res.json();
+    async function fetchPhotos() {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwhVRbNLkyjnxzarnu8UOBDxtvq-QuyyPF2ptsBiT8DM6S8oeYmqarnxGotWcqNR-1c/exec');
+      const data = await response.json();
+      photos = data;
 
-        if (photos.length === 0) {
-          gallery.textContent = 'Inga bilder att visa.';
-          return;
-        }
-
-        gallery.innerHTML = '';
-
-        photos.forEach(photo => {
-          if (!photo.url) return;
-          const card = document.createElement('div');
-          card.className = 'photo-card';
-
-          const img = document.createElement('img');
-          img.src = photo.url;
-          img.alt = photo.title || 'Bild';
-
-          card.appendChild(img);
-          gallery.appendChild(card);
-        });
-
-      } catch (e) {
-        gallery.textContent = 'Kunde inte ladda bilder: ' + e.message;
-      }
+      displayFullscreen(shuffleArray(photos)[currentPhotoIndex].url);
+      setTimeout(nextPhoto, displayDuration);
+      displayPhotos(photos);
     }
 
-    loadPhotos();
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function displayFullscreen(url) {
+      const fullscreenImg = document.getElementById('fullscreen-img');
+      fullscreenImg.style.backgroundImage = `url(${url})`;
+      fullscreenImg.style.display = 'block';
+      isFullscreenActive = true;
+    }
+
+    function nextPhoto() {
+      if (!isFullscreenActive) return;
+
+      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+      displayFullscreen(shuffleArray(photos)[currentPhotoIndex].url);
+      setTimeout(nextPhoto, displayDuration);
+    }
+
+    function displayPhotos(photosToDisplay) {
+      const gallery = document.getElementById('photo-gallery');
+      photosToDisplay.forEach(photo => {
+        const imgElement = document.createElement('img');
+        imgElement.src = photo.url;
+        gallery.appendChild(imgElement);
+
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              imgElement.style.opacity = 1;
+              observer.unobserve(imgElement);
+            }
+          });
+        });
+        observer.observe(imgElement);
+      });
+
+      document.querySelector('main').style.opacity = 1;
+    }
+
+    document.getElementById('fullscreen-img').addEventListener('click', () => {
+      const fullscreenImg = document.getElementById('fullscreen-img');
+      fullscreenImg.style.display = 'none';
+      document.getElementById('fullscreen-header').style.opacity = 0;
+      isFullscreenActive = false;
+      document.getElementById('header').style.opacity = 1;
+    });
+
+    fetchPhotos();
   </script>
 </body>
 </html>
