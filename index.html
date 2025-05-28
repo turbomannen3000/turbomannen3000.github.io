@@ -11,201 +11,60 @@
       background-color: #f0f0f0;
       color: #333;
       margin: 0;
-      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
 
     header {
-      text-align: left;
-      padding: 1rem;
-      color: black;
-      font-size: 1.5rem;
-      font-weight: 700;
       position: fixed;
-      width: 100%;
       top: 0;
       left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
       background-color: transparent;
       z-index: 1000;
-      opacity: 0;
-      transition: opacity 1s ease-in;
     }
 
-    main {
-      padding-top: 100px;
-      opacity: 0;
-    }
-
-    #photo-gallery {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-start;
-      align-items: flex-start;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-    }
-
-    #photo-gallery img {
-      width: auto;
-      height: 50vh;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-
-    @media (max-width: 768px) {
-      #photo-gallery {
-        flex-wrap: wrap;
-        flex-direction: column;
-        overflow-x: hidden;
-        overflow-y: auto;
-        align-items: center;
-      }
-
-      #photo-gallery img {
-        height: auto;
-        width: 90%;
-        margin-bottom: 10px;
-      }
-    }
-
-    #fullscreen-img {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      display: none;
-    }
-
-    #fullscreen-header {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 2rem;
-      text-align: center;
+    .title-left {
       font-weight: 700;
-      z-index: 1000;
-      opacity: 1;
-      transition: opacity 0.5s;
     }
 
-    @keyframes fadeOut {
-      0% { opacity: 1; }
-      100% { opacity: 0; }
+    .link-right {
+      font-weight: 300;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: #333;
+      transition: opacity 0.3s;
     }
 
-    .fade-out {
-      animation: fadeOut 2s forwards;
+    .link-right:hover {
+      opacity: 0.7;
+    }
+
+    .center-image {
+      max-width: 90vw;
+      max-height: 80vh;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 <body>
-  <header id="header" class="fraunces-unique">
-    PHILIP STOCKENHED
+  <header>
+    <div class="title-left">PHILIP STOCKENHED</div>
+    <a href="portfolio.html" class="link-right">Portfolio</a>
   </header>
 
-  <div id="fullscreen-img"></div>
-  <div id="fullscreen-header">PHILIP STOCKENHED</div>
-
-  <main>
-    <section id="photo-gallery"></section>
-  </main>
-
-  <script>
-    let photos = [];
-    let currentPhotoIndex = 0;
-    const displayDuration = 2000;
-    let isFullscreenActive = false;
-
-    const githubUser = 'turbomannen3000';
-    const repoName = 'portfolio-images';
-    const branch = 'main';
-    const apiUrl = `https://api.github.com/repos/${githubUser}/${repoName}/contents/?ref=${branch}`;
-
-    async function fetchPhotos() {
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        const imageFiles = data.filter(file =>
-          file.name.match(/\.(jpe?g|png|webp)$/i)
-        );
-
-        photos = imageFiles.map(file => ({
-          url: `https://raw.githubusercontent.com/${githubUser}/${repoName}/${branch}/${file.name}`,
-          title: file.name
-        }));
-
-        displayFullscreen(shuffleArray(photos)[currentPhotoIndex].url);
-        setTimeout(nextPhoto, displayDuration);
-        displayPhotos(photos);
-      } catch (error) {
-        console.error('Kunde inte hämta bilder från GitHub:', error);
-      }
-    }
-
-    function shuffleArray(array) {
-      const shuffled = [...array];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled;
-    }
-
-    function displayFullscreen(url) {
-      const fullscreenImg = document.getElementById('fullscreen-img');
-      fullscreenImg.style.backgroundImage = `url(${url})`;
-      fullscreenImg.style.display = 'block';
-      isFullscreenActive = true;
-    }
-
-    function nextPhoto() {
-      if (!isFullscreenActive) return;
-
-      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
-      displayFullscreen(shuffleArray(photos)[currentPhotoIndex].url);
-      setTimeout(nextPhoto, displayDuration);
-    }
-
-    function displayPhotos(photosToDisplay) {
-      const gallery = document.getElementById('photo-gallery');
-      photosToDisplay.forEach(photo => {
-        const imgElement = document.createElement('img');
-        imgElement.src = photo.url;
-        gallery.appendChild(imgElement);
-
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              imgElement.style.opacity = 1;
-              observer.unobserve(imgElement);
-            }
-          });
-        });
-        observer.observe(imgElement);
-      });
-
-      document.querySelector('main').style.opacity = 1;
-    }
-
-    document.getElementById('fullscreen-img').addEventListener('click', () => {
-      const fullscreenImg = document.getElementById('fullscreen-img');
-      fullscreenImg.style.display = 'none';
-      document.getElementById('fullscreen-header').style.opacity = 0;
-      isFullscreenActive = false;
-      document.getElementById('header').style.opacity = 1;
-    });
-
-    fetchPhotos();
-  </script>
+  <img
+    class="center-image"
+    src="https://raw.githubusercontent.com/turbomannen3000/portfolio-images/refs/heads/main/IMG-2025-05-28T13-46-15-945Z.jpg"
+    alt="Första bilden i portfolion"
+  />
 </body>
 </html>
