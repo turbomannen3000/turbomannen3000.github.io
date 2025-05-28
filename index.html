@@ -11,11 +11,11 @@
       background-color: #f0f0f0;
       color: #333;
       margin: 0;
+      padding: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
     }
 
     header {
@@ -30,6 +30,7 @@
       font-size: 1.5rem;
       background-color: transparent;
       z-index: 1000;
+      box-sizing: border-box;
     }
 
     .title-left {
@@ -48,15 +49,31 @@
       opacity: 0.7;
     }
 
+    .image-wrapper {
+      margin-top: 120px; /* Enough to clear fixed header */
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
     .center-image {
-      width: 40vw;
+      width: 55vw;
       height: auto;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      max-width: 90%;
     }
 
     @media (max-width: 768px) {
       .center-image {
-        width: 70vw;
+        width: 80vw;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
       }
     }
   </style>
@@ -67,10 +84,12 @@
     <a href="portfolio.html" class="link-right">Portfolio</a>
   </header>
 
-  <img
-    class="center-image"
-    src="https://raw.githubusercontent.com/turbomannen3000/portfolio-images/refs/heads/main/IMG-2025-05-28T13-46-15-945Z.jpg"
-    alt="Första bilden i portfolion"
-  />
+  <div class="image-wrapper">
+    <img
+      class="center-image"
+      src="https://raw.githubusercontent.com/turbomannen3000/portfolio-images/refs/heads/main/IMG-2025-05-28T13-46-15-945Z.jpg"
+      alt="Första bilden i portfolion"
+    />
+  </div>
 </body>
 </html>
